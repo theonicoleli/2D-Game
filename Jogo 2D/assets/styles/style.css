@@ -1,0 +1,75 @@
+:root {
+    --corPrincipal: black;
+}
+
+body {
+    background-color: rgb(109, 108, 108);
+    color: rgb(255, 255, 255);
+}
+
+.fase {
+    background-color: white;
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+    box-shadow: 5px 5px 15px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 15px solid rgb(0, 0, 0);
+}
+
+.fase .menuInterativo {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    font-size: 35px;
+}
+
+.fase .menuInterativo button {
+    font-size: 28px;
+    background-color: rgb(50, 71, 71);
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
+
+.fase img{
+    width: 150px;
+    height: 150px;
+}
+
+.selecionarUtensilios{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item.bolsa{
+    width: 320px;
+    height: 190px;
+}
+
+.item {
+    width: 100px;
+    height: 100px;
+    opacity: 1;
+    transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.item:hover {
+    transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: scale(1.2);
+}
+
+.item:not(:hover) {
+    opacity: 0.7;
+}
+
+.adicionou-imagens {
+    background-color: rgb(95, 95, 95);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+}
