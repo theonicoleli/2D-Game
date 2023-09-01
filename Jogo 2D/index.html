@@ -1,3 +1,6 @@
+<!-- TRABALHO REALIZADO EM DUPLA:
+THÉO NICOLELI E PEDRO DALLANORA -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +14,8 @@
     <title>A Jornada de Gato Roberto</title>
 </head>
 <body>
+    <button id="playButton" onchange="musicSong();">Game Music</button>
+    <audio class="music" src="songs/OfficialMusic.mp4" autoplay></audio>
     <div class="text">
         <p class="fraseInicial">Gatos da Vizinhança</p>
         <p class="buscandoLeia">Em busca de Leia</p>
@@ -21,25 +26,27 @@
         <p class="lutaFinal">Oh não... você lutará contra Wollstok</p>
     </div>
     <div class="fase">
-        <div class="menuInterativo">
-            <button class="subir">
-                <i class="fa-solid fa-arrow-up"></i>
-            </button>
-            <button class="descer">
-                <i class="fa-solid fa-arrow-down"></i>
-            </button>
-            <button class="esquerda">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <button class="direita">
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
+        <img class="backgroundImage" src="img/Jogo/Mapa/parkImage.png" alt="park">
+        <div class="timelapse"></div>
+        <div class="heart"></div>
         <img class="robertoStatic" src="img/Roberto/RobertoDePe.png" alt="roberto">
+    </div>
+    <div class="menuInterativo">
+        <button class="subir">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <button class="descer">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
+        <button class="esquerda">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button class="direita">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
     </div>
     <div class="selecionarUtensilios">
         <img class="item bolsa" src="img/Items/bolsa.png" alt="bolsa">
-        <!-- <img src="" alt=""> colocar mapa -->
     </div>
 </body>
 </html>

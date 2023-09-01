@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+    let startLife = 3;
+
     let phases = {
         firstPhase: document.querySelector(".text .fraseInicial"),
         secondPhase: document.querySelector(".text .buscandoLeia"),
@@ -63,13 +65,25 @@ document.addEventListener("DOMContentLoaded", function() {
     
         let positionX = 0; // Posição X
         let positionY = 0; // Posição Y
-        let step = 10; // Quantidade de espaço ao andar
-    
+        let step = 20; // Quantidade de espaço ao andar
+
+        let cadeira = [];
+        let positionCadeiraX = []
+        let positionCadeiraY = []
+        for (let i = -29; i <= 33; i++) {
+            positionCadeiraX.push(i);
+        }
+        for (let i = 120; i <= 342; i++) {
+            positionCadeiraY.push(i);
+        }
+        cadeira.push(positionCadeiraX)
+        cadeira.push(positionCadeiraY)
+
         up.addEventListener("click", function() {
             let targetY = positionY - step; // Verificação onde será o próximo passo
 
             function animate() { // Animação para deixar o caminhar mais suave
-                if (positionY > targetY) {
+                if (positionY > targetY && positionY > -118) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     requestAnimationFrame(animate);
@@ -83,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let targetY = positionY + step;
     
             function animate() {
-                if (positionY < targetY) {
+                if (positionY < targetY && positionY < 411) {
                     positionY += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     requestAnimationFrame(animate);
@@ -97,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let targetX = positionX - step;
 
             function animate() {
-                if (positionX > targetX) {
+                if (positionX > targetX && positionX > -29) {
                     positionX -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     requestAnimationFrame(animate);
@@ -111,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let targetX = positionX + step;
 
             function animate() {
-                if (positionX < targetX) {
+                if (positionX < targetX && positionX < 931) {
                     positionX += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     requestAnimationFrame(animate);
@@ -160,52 +174,133 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
+    function start(minutes) {
+        let timeLapse = document.querySelector(".timelapse");
+
+        function updateTimer() {
+            if (minutes <= 0) {
+                clearInterval(timerInterval);
+                timeLapse.innerHTML = "0:00";
+            } else {
+                const mins = Math.floor(minutes / 60);
+                const secs = minutes % 60;
+
+                const formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                timeLapse.innerHTML = formattedTime;
+                timeLapse.style.color = "white";
+                timeLapse.style.backgroundColor = "black";
+                timeLapse.style.borderBottomRightRadius = "10px";
+                timeLapse.style.width = "100px";
+                timeLapse.style.fontWeight = "bold";
+                timeLapse.style.fontSize = "20px";
+                timeLapse.style.textAlign = "center";
+
+                minutes -= 1;
+            }
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    }
     
     function mudarPersonagem(alt) {
         let robertoStatic = document.querySelector(".fase .robertoStatic");
-        switch (alt) {
-            case "Botas":
-                robertoStatic.src = "img/Roberto/RobertoNoite.png";
-                setTimeout(function() {
+        let timeLapse = document.querySelector(".timelapse");
+        if (timeLapse.innerHTML === "") {
+            switch (alt) {
+                case "Botas":
+                    start(20);
+                    robertoStatic.src = "img/Roberto/RobertoNoite.png";
+                    robertoStatic.style.width = "160px"
+                    robertoStatic.style.height = "100px"
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                        robertoStatic.style.width = "100px"
+                        robertoStatic.style.height = "100px"
+                    }, 20000);
+                    break;
+                case "Camera":
+                    start(20);
+                    robertoStatic.src = "img/Roberto/RobertoCameras.png";
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                    }, 20000);
+                    break;
+                case "Escudo":
+                    start(20);
+                    robertoStatic.src = "img/Roberto/RobertoEscudo.png";
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                    }, 20000);
+                    break;
+                case "Fish":
+                    start(4);
+                    robertoStatic.src = "img/Roberto/Animations/RobertoFishPower.gif";
+                    robertoStatic.style.width = "180px"
+                    robertoStatic.style.height = "150px"
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                        robertoStatic.style.width = "100px"
+                        robertoStatic.style.height = "100px"
+                    }, 4000);
+                    break;
+                case "Knife":
+                    start(20);
+                    robertoStatic.src = "img/Roberto/RobertoMaldade.png";
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                    }, 20000);
+                    break;
+                case "Reviver":
+                    start(1,3);
+                    robertoStatic.src = "img/Roberto/Animations/RobertoVoltando.gif";
+                    setTimeout(function() {
+                        robertoStatic.src = "img/Roberto/RobertoDePe.png";
+                        timeLapse.innerHTML = '';
+                    }, 1300);
+                    break;
+                default:
                     robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 100000);
-                break;
-            case "Camera":
-                robertoStatic.src = "img/Roberto/RobertoCameras.png";
-                setTimeout(function() {
-                    robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 100000);
-                break;
-            case "Escudo":
-                robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                setTimeout(function() {
-                    robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 100000);
-                break;
-            case "Fish":
-                robertoStatic.src = "img/Roberto/Animations/RobertoFishPower.gif";
-                setTimeout(function() {
-                    robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 5000);
-                break;
-            case "Knife":
-                robertoStatic.src = "img/Roberto/RobertoMaldade.png";
-                setTimeout(function() {
-                    robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 100000);
-                break;
-            case "Reviver":
-                robertoStatic.src = "img/Roberto/Animations/RobertoVoltando.gif";
-                setTimeout(function() {
-                    robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                }, 1300);
-                break;
-            default:
-                robertoStatic.src = "img/Roberto/RobertoDePe.png";
-                break;
+                    break;
+            }
         }
     }
     
     utensilios();
+
+    function lifesImage() {
+        let lifeHeart = document.querySelector(".heart");
+
+        for (let i = 0; i < startLife; i ++) {
+            lifeHeart.innerHTML += `<img class="coracao ${i}" src="img/Jogo/Life/Life.png">`
+        }
+    }
     
+    lifesImage();
+
+    function musicSong() {
+        let audio = document.querySelector(".music");
+        let playButton = document.querySelector("#playButton");
+    
+        if (audio.paused || audio.ended) {
+            audio.play();
+            playButton.innerHTML = "Pausar";
+        } else {
+            audio.pause();
+            playButton.innerHTML = "Reproduzir";
+        }
+    
+        audio.addEventListener("ended", function() {
+            audio.currentTime = 0;
+            audio.play();
+        });
+    }
+    
+    document.getElementById("playButton").addEventListener("click", musicSong);
 });
