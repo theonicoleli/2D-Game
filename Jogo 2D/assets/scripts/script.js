@@ -4,57 +4,102 @@ document.addEventListener("DOMContentLoaded", function() {
     let phases = {
         firstPhase: document.querySelector(".text .fraseInicial"),
         secondPhase: document.querySelector(".text .buscandoLeia"),
-        thirdPhase: document.querySelector(".text .lutaBeto"),
-        fourthPhase: document.querySelector(".text .lutaSnape"),
-        fifthPhase: document.querySelector(".text .lutaFinal"),
+        thirdPhase: document.querySelector(".text .robertoResposta1"),
+        fourthPhase: document.querySelector(".text .patrickResposta"),
+        fifthPhase: document.querySelector(".text .robertoResposta2"),
+        sixthPhase: document.querySelector(".text .patrickResposta2"),
+        seventhPhase: document.querySelector(".text .missionBuscandoLeia"),
+        eighthPhase: document.querySelector(".text .lutaBeto"),
+        ninthPhase: document.querySelector(".text .lutaSnape"),
+        tenthPhase: document.querySelector(".text .lutaFinal"),
         ganhou: document.querySelector(".text .venceu"),
         perdeu: document.querySelector(".text .perdeu"),
     };
     
-    const allPhrases = document.querySelectorAll(".text p");
-    const selectedPhrase = phases.ganhou;
-    const interval = 100; // Intervalo entre cada caractere (em milissegundos)
+    const allPhrases = Object.values(phases);
+    let currentPhraseIndex = 0;
+    let selectedPhrase = allPhrases[currentPhraseIndex];
+    console.log(selectedPhrase)
+
+    function changingTextType() {
+        allPhrases.forEach(phrase => {
+            phrase.style.display = "none"; // Escondendo as frases
+        });
+
+        selectedPhrase.style.display = "block";
+        selectedPhrase.style.cssText = `
+            height: 70px;
+            font-weight: bold;
+            font-size: 35px;
+            text-align: center;
+            margin: auto;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        `;
+    }
     
-    allPhrases.forEach(phrase => {
-        phrase.style.display = "none"; // Ocultar todas as frases
-    });
-
-    selectedPhrase.style.display = "block";
-    selectedPhrase.style.cssText = `
-    height: 70px;
-    font-weight: bold;
-    font-size: 35px;
-    text-align: center;
-    margin: auto;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    `;
-
-    let charIndex = 0;
-    const textContent = selectedPhrase.textContent;
+    function changingTextType() {
+        allPhrases.forEach(phrase => {
+            phrase.style.display = "none"; // Ocultar todas as frases
+        });
     
-    function typeText() {
-        selectedPhrase.textContent = textContent.substring(0, charIndex);
-        charIndex++;
-
-        if (charIndex <= textContent.length) {
-            setTimeout(typeText, interval);
-        } else {
-            setTimeout(eraseText, interval * 2); // Esperar antes de começar a apagar
-        }
+        selectedPhrase.style.display = "block";
+        selectedPhrase.style.cssText = `
+        height: 70px;
+        font-weight: bold;
+        font-size: 35px;
+        text-align: center;
+        margin: auto;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        `;
     }
 
-    function eraseText() {
-        selectedPhrase.textContent = textContent.substring(0, charIndex);
-        charIndex--;
+    changingTextType();
 
-        if (charIndex >= 0) {
-            setTimeout(eraseText, interval);
-        } else {
-            setTimeout(typeText, interval); // Começar a escrever novamente
+    function typeAndErase(selectedPhrase) {
+        const originalText = selectedPhrase.textContent;
+        let charIndex = 0;
+        let isTyping = true;
+        const interval = 150; // Velocidade de digitação e apagamento original (ajuste conforme necessário)
+    
+        function typeNextCharacter() {
+            selectedPhrase.textContent = originalText.substring(0, charIndex);
+            charIndex++;
+    
+            if (charIndex <= originalText.length) {
+                setTimeout(typeNextCharacter, interval);
+            }
         }
+    
+        function eraseTextForPhrase() {
+            let charIndex = originalText.length;
+    
+            function eraseNextCharacter() {
+                selectedPhrase.textContent = originalText.substring(0, charIndex);
+                charIndex--;
+    
+                if (charIndex >= 0) {
+                    setTimeout(eraseNextCharacter, interval);
+                } else {
+                    isTyping = true;
+                    charIndex = 0;
+                    setTimeout(typeNextCharacter, interval); // Esperar antes de digitar novamente
+                }
+            }
+    
+            eraseNextCharacter();
+        }
+    
+        function startTypingOrErasing() {
+            if (isTyping) {
+                typeNextCharacter()
+            }
+        }
+    
+        startTypingOrErasing();
     }
+    
+    typeAndErase(selectedPhrase);
 
-    typeText(); // Iniciar o efeito ao carregar a página
 
     function movimentos() {
         let roberto = document.querySelector(".robertoStatic");
@@ -66,23 +111,24 @@ document.addEventListener("DOMContentLoaded", function() {
         let positionX = 119; // Posição X
         let positionY = 277; // Posição Y
         let step = 20; // Quantidade de espaço ao andar
-
-        up.addEventListener("click", function() {
+    
+        up.addEventListener("click", function () {
             let targetY = positionY - step; // Verificação onde será o próximo passo
-
-            function animate() { // Animação para deixar o caminhar mais suave
+    
+            function animate() {
                 if (positionY > targetY && positionY > -118) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
+                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
-        down.addEventListener("click", function() {
+        down.addEventListener("click", function () {
             let targetY = positionY + step;
     
             function animate() {
@@ -92,14 +138,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
+                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
-        left.addEventListener("click", function() {
+        left.addEventListener("click", function () {
             let targetX = positionX - step;
-
+    
             function animate() {
                 if (positionX > targetX && positionX > -29) {
                     positionX -= 1;
@@ -107,14 +154,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
+                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
-        right.addEventListener("click", function() {
+        right.addEventListener("click", function () {
             let targetX = positionX + step;
-
+    
             function animate() {
                 if (positionX < targetX && positionX < 931) {
                     positionX += 1;
@@ -122,12 +170,41 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
+                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
-    }
+    
+        // Função para verificar a posição e executar ações conforme necessário
+        let interval; // Declare a variável de intervalo
 
+        function checkPosition() {
+            if (positionX >= 280 && positionX <= 319 && positionY >= 317 && positionY <= 357) {
+                if (selectedPhrase.textContent === '') {
+                    // Limpando todos os intervalos existentes para evitar sobreposição
+                    clearInterval(interval);
+
+                    interval = setInterval(() => {
+                        if (currentPhraseIndex <= 6) {
+                            selectedPhrase = allPhrases[currentPhraseIndex];
+                            changingTextType();
+                            typeAndErase(selectedPhrase);
+                            currentPhraseIndex++;
+                        } else {
+                            clearInterval(interval); 
+                        }
+                    }, 10000);
+                } 
+                else {
+                    if (selectedPhrase.textContent === 'Missão: Em busca de Leia!') {
+                        return;
+                    }
+                    selectedPhrase.textContent = '';
+                }
+            }
+        }
+    }
     movimentos();
 
     function utensilios() {
