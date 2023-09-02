@@ -63,21 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let left = document.querySelector(".esquerda");
         let right = document.querySelector(".direita");
     
-        let positionX = 0; // Posição X
-        let positionY = 0; // Posição Y
+        let positionX = 119; // Posição X
+        let positionY = 277; // Posição Y
         let step = 20; // Quantidade de espaço ao andar
-
-        let cadeira = [];
-        let positionCadeiraX = []
-        let positionCadeiraY = []
-        for (let i = -29; i <= 33; i++) {
-            positionCadeiraX.push(i);
-        }
-        for (let i = 120; i <= 342; i++) {
-            positionCadeiraY.push(i);
-        }
-        cadeira.push(positionCadeiraX)
-        cadeira.push(positionCadeiraY)
 
         up.addEventListener("click", function() {
             let targetY = positionY - step; // Verificação onde será o próximo passo
@@ -86,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (positionY > targetY && positionY > -118) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
             }
@@ -100,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (positionY < targetY && positionY < 411) {
                     positionY += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
             }
@@ -114,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (positionX > targetX && positionX > -29) {
                     positionX -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
             }
@@ -128,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (positionX < targetX && positionX < 931) {
                     positionX += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                 }
             }
@@ -303,4 +295,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     document.getElementById("playButton").addEventListener("click", musicSong);
+
+
+    function positionStart() {
+        let roberto = document.querySelector(".robertoStatic");
+        positionX = 119;
+        positionY = 277;
+        roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+    }
+
+    positionStart()
+
 });
