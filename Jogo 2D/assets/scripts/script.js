@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const originalText = selectedPhrase.textContent;
         let charIndex = 0;
         let isTyping = true;
-        const interval = 150; // Velocidade de digitação e apagamento original (ajuste conforme necessário)
+        const interval = 75; // Velocidade de digitação e apagamento original (ajuste conforme necessário)
     
         function typeNextCharacter() {
             selectedPhrase.textContent = originalText.substring(0, charIndex);
@@ -100,19 +100,21 @@ document.addEventListener("DOMContentLoaded", function() {
     
     typeAndErase(selectedPhrase);
 
+    let walk = true;
 
-    function movimentos() {
+    function movimentos(valueA, valueB) {
         let roberto = document.querySelector(".robertoStatic");
         let up = document.querySelector(".subir");
         let down = document.querySelector(".descer");
         let left = document.querySelector(".esquerda");
         let right = document.querySelector(".direita");
     
-        let positionX = 119; // Posição X
-        let positionY = 277; // Posição Y
+        let positionX = valueA; // Posição X
+        let positionY = valueB; // Posição Y
         let step = 20; // Quantidade de espaço ao andar
     
         up.addEventListener("click", function () {
+            if (!walk) return;
             let targetY = positionY - step; // Verificação onde será o próximo passo
     
             function animate() {
@@ -121,14 +123,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
+                    checkPosition(); // Verificando a posição após cada etapa da animação
                 }
-                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
         down.addEventListener("click", function () {
+            if (!walk) return;
             let targetY = positionY + step;
     
             function animate() {
@@ -137,14 +140,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
+                    checkPosition(); // Verificando a posição após cada etapa da animação
                 }
-                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
         left.addEventListener("click", function () {
+            if (!walk) return;
             let targetX = positionX - step;
     
             function animate() {
@@ -153,14 +157,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
+                    checkPosition(); // Verificando a posição após cada etapa da animação
                 }
-                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
         right.addEventListener("click", function () {
+            if (!walk) return;
             let targetX = positionX + step;
     
             function animate() {
@@ -169,38 +174,70 @@ document.addEventListener("DOMContentLoaded", function() {
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
+                    checkPosition(); // Verificando a posição após cada etapa da animação
                 }
-                checkPosition(); // Verificando a posição após cada etapa da animação
             }
     
             animate();
         });
     
         // Função para verificar a posição e executar ações conforme necessário
-        let interval; // Declare a variável de intervalo
+        let interval; // Declarando a variável de intervalo
 
         function checkPosition() {
             if (positionX >= 280 && positionX <= 319 && positionY >= 317 && positionY <= 357) {
+                walk = false;
                 if (selectedPhrase.textContent === '') {
+                    let fase = document.querySelector('.fase');
                     // Limpando todos os intervalos existentes para evitar sobreposição
                     clearInterval(interval);
-
+        
+                    // Guarde o conteúdo original da div 'fase'
+                    const originalContent = fase.innerHTML;
+        
+                    // Limpando o conteúdo da div 'fase'
+                    fase.innerHTML = '';
+        
+                    // Removendo a imagem de fundo definindo o estilo de fundo como vazio
+                    fase.style.background = 'none';
+        
+                    // Criando um elemento de imagem
+                    let imgLoading = document.createElement('img');
+                    imgLoading.src = 'img/Jogo/Animações/Loading.gif';
+                    imgLoading.style.zIndex = '5'; // Z-index como string
+                    imgLoading.style.width = '1000px'; // Largura como string com 'px'
+                    imgLoading.style.height = '600px'; // Altura como string com 'px'
+        
+                    // Adicionando a imagem diretamente à div 'fase'
+                    fase.appendChild(imgLoading);
+        
                     interval = setInterval(() => {
                         if (currentPhraseIndex <= 6) {
+                            // Verificando se o elemento imgLoading ainda está presente
+                            if (fase.contains(imgLoading)) {
+                                fase.removeChild(imgLoading);
+                            }
+                            // Restaurando o conteúdo original da 'fase'
+                            fase.innerHTML = originalContent;
+
                             selectedPhrase = allPhrases[currentPhraseIndex];
                             changingTextType();
                             typeAndErase(selectedPhrase);
                             currentPhraseIndex++;
                         } else {
                             clearInterval(interval); 
+                            walk = true;
+                            movimentos(positionX, positionY);
                         }
-                    }, 10000);
+                    }, 3500);
                 } 
                 else {
                     if (selectedPhrase.textContent === 'Missão: Em busca de Leia!') {
                         return;
+                    } else if (selectedPhrase.textContent === "Chegue até o circulo verde!") {
+                        selectedPhrase.textContent = '';
+                        checkPosition();
                     }
-                    selectedPhrase.textContent = '';
                 }
             }
         }
@@ -379,6 +416,7 @@ document.addEventListener("DOMContentLoaded", function() {
         positionX = 119;
         positionY = 277;
         roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
+        movimentos(positionX, positionY)
     }
 
     positionStart()
