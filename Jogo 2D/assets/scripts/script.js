@@ -9,9 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
         fifthPhase: document.querySelector(".text .robertoResposta2"),
         sixthPhase: document.querySelector(".text .patrickResposta2"),
         seventhPhase: document.querySelector(".text .missionBuscandoLeia"),
-        eighthPhase: document.querySelector(".text .lutaBeto"),
-        ninthPhase: document.querySelector(".text .lutaSnape"),
-        tenthPhase: document.querySelector(".text .lutaFinal"),
+        eighthPhase: document.querySelector(".text .mendigo"),
+        ninthPhase: document.querySelector(".text .robertoRespostaMendigo"),
+        tenthPhase: document.querySelector(".text .lutaBeto"),
+        eleventhPhase: document.querySelector(".text .lutaSnape"),
+        twelfthPhase: document.querySelector(".text .lutaFinal"),
         ganhou: document.querySelector(".text .venceu"),
         perdeu: document.querySelector(".text .perdeu"),
     };
@@ -101,8 +103,12 @@ document.addEventListener("DOMContentLoaded", function() {
     typeAndErase(selectedPhrase);
 
     let walk = true;
+    let exec = 0;
+    let activate = true ? exec == 0 : false;
+    let activateB = true ? exec == 0 : false;
 
     function movimentos(valueA, valueB) {
+        console.log(activate)
         let roberto = document.querySelector(".robertoStatic");
         let up = document.querySelector(".subir");
         let down = document.querySelector(".descer");
@@ -114,16 +120,19 @@ document.addEventListener("DOMContentLoaded", function() {
         let step = 20; // Quantidade de espaço ao andar
     
         up.addEventListener("click", function () {
-            if (!walk) return;
             let targetY = positionY - step; // Verificação onde será o próximo passo
     
             function animate() {
-                if (positionY > targetY && positionY > -118) {
+                if (!walk) {
+                    return;
+                }
+                else if (positionY > targetY && positionY > -118) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
-                    checkPosition(); // Verificando a posição após cada etapa da animação
+                    checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
+                    checkPosition(activateB, -6, 44, 101, 127, 7, 8);
                 }
             }
     
@@ -131,16 +140,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     
         down.addEventListener("click", function () {
-            if (!walk) return;
             let targetY = positionY + step;
     
             function animate() {
-                if (positionY < targetY && positionY < 411) {
+                if (!walk) {
+                    return;
+                }
+                else if (positionY < targetY && positionY < 411) {
                     positionY += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
-                    checkPosition(); // Verificando a posição após cada etapa da animação
+                    checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
+                    checkPosition(activateB, -6, 44, 101, 127, 7, 8);
                 }
             }
     
@@ -148,16 +160,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     
         left.addEventListener("click", function () {
-            if (!walk) return;
             let targetX = positionX - step;
     
             function animate() {
-                if (positionX > targetX && positionX > -29) {
+                if (!walk) {
+                    return;
+                }
+                else if (positionX > targetX && positionX > -29) {
                     positionX -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
-                    checkPosition(); // Verificando a posição após cada etapa da animação
+                    checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
+                    checkPosition(activateB, -6, 44, 101, 127, 7, 8);
                 }
             }
     
@@ -165,16 +180,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     
         right.addEventListener("click", function () {
-            if (!walk) return;
+            console.log("A")
             let targetX = positionX + step;
     
             function animate() {
-                if (positionX < targetX && positionX < 931) {
+                if (!walk) {
+                    return;
+                }
+                else if (positionX < targetX && positionX < 931) {
                     positionX += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
-                    checkPosition(); // Verificando a posição após cada etapa da animação
+                    checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
+                    checkPosition(activateB, -6, 44, 101, 127, 7, 8);
                 }
             }
     
@@ -184,65 +203,81 @@ document.addEventListener("DOMContentLoaded", function() {
         // Função para verificar a posição e executar ações conforme necessário
         let interval; // Declarando a variável de intervalo
 
-        function checkPosition() {
-            if (positionX >= 280 && positionX <= 319 && positionY >= 317 && positionY <= 357) {
-                walk = false;
-                if (selectedPhrase.textContent === '') {
-                    let fase = document.querySelector('.fase');
-                    // Limpando todos os intervalos existentes para evitar sobreposição
-                    clearInterval(interval);
-        
-                    // Guarde o conteúdo original da div 'fase'
-                    const originalContent = fase.innerHTML;
-        
-                    // Limpando o conteúdo da div 'fase'
-                    fase.innerHTML = '';
-        
-                    // Removendo a imagem de fundo definindo o estilo de fundo como vazio
-                    fase.style.background = 'none';
-        
-                    // Criando um elemento de imagem
-                    let imgLoading = document.createElement('img');
-                    imgLoading.src = 'img/Jogo/Animações/Loading.gif';
-                    imgLoading.style.zIndex = '5'; // Z-index como string
-                    imgLoading.style.width = '1000px'; // Largura como string com 'px'
-                    imgLoading.style.height = '600px'; // Altura como string com 'px'
-        
-                    // Adicionando a imagem diretamente à div 'fase'
-                    fase.appendChild(imgLoading);
-        
-                    interval = setInterval(() => {
-                        if (currentPhraseIndex <= 6) {
-                            // Verificando se o elemento imgLoading ainda está presente
-                            if (fase.contains(imgLoading)) {
-                                fase.removeChild(imgLoading);
-                            }
-                            // Restaurando o conteúdo original da 'fase'
-                            fase.innerHTML = originalContent;
+        function retornarLayoutAnterior(originalContent) {
+            let fase = document.querySelector('.fase');
+            fase.innerHTML = originalContent;
+        }
 
-                            selectedPhrase = allPhrases[currentPhraseIndex];
-                            changingTextType();
-                            typeAndErase(selectedPhrase);
-                            currentPhraseIndex++;
+        function checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd) {
+            if (activate) {
+                if (positionX >= numX && positionX <= numY && positionY >= numXa && positionY <= numXb) {
+                    walk = false;
+                    if (selectedPhrase.textContent === '') {
+                        currentPhraseIndex = numPhraseStart;
+                        let fase = document.querySelector('.fase');
+                        // Limpando todos os intervalos existentes para evitar sobreposição
+                        clearInterval(interval);
+            
+                        // Guarde o conteúdo original da div 'fase'
+                        const originalContent = fase.innerHTML;
+            
+                        // Limpando o conteúdo da div 'fase'
+                        fase.innerHTML = '';
+            
+                        // Removendo a imagem de fundo definindo o estilo de fundo como vazio
+                        fase.style.background = 'none';
+            
+                        // Criando um elemento de imagem
+                        let imgLoading = document.createElement('img');
+                        imgLoading.src = 'img/Jogo/Animações/Loading.gif';
+                        imgLoading.style.zIndex = '5'; // Z-index como string
+                        imgLoading.style.width = '1000px'; // Largura como string com 'px'
+                        imgLoading.style.height = '600px'; // Altura como string com 'px'
+            
+                        // Adicionando a imagem diretamente à div 'fase'
+                        fase.appendChild(imgLoading);
+            
+                        interval = setInterval(() => {
+                            if (currentPhraseIndex >= numPhraseStart && currentPhraseIndex <= numPhraseEnd) {
+                                // Verificando se o elemento imgLoading ainda está presente
+                                if (fase.contains(imgLoading)) {
+                                    fase.removeChild(imgLoading);
+                                }
+                                // Restaurando o conteúdo original da 'fase'
+                                retornarLayoutAnterior(originalContent);
+
+                                selectedPhrase = allPhrases[currentPhraseIndex];
+                                changingTextType();
+                                typeAndErase(selectedPhrase);
+                                currentPhraseIndex++;
+                            } else {
+                                clearInterval(interval); 
+                                retornarLayoutAnterior(originalContent);
+                                activate = false
+                                walk = true;
+                                exec++;
+                                movimentos(positionX, positionY);
+                                return;
+                            }
+                        }, 3500);
+                    } 
+                    else {
+                        if (selectedPhrase.textContent === 'Missão: Em busca de Leia!') {
+                            return;
+                        } else if (selectedPhrase.textContent === "Chegue até o circulo verde!") {
+                            selectedPhrase.textContent = '';
+                            checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd);
                         } else {
-                            clearInterval(interval); 
-                            walk = true;
-                            movimentos(positionX, positionY);
+                            selectedPhrase.textContent = '';
+                            checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd);
                         }
-                    }, 3500);
-                } 
-                else {
-                    if (selectedPhrase.textContent === 'Missão: Em busca de Leia!') {
-                        return;
-                    } else if (selectedPhrase.textContent === "Chegue até o circulo verde!") {
-                        selectedPhrase.textContent = '';
-                        checkPosition();
                     }
                 }
+            } else {
+                return;
             }
         }
     }
-    movimentos();
 
     function utensilios() {
         let selecionarUtensilios = document.querySelector(".selecionarUtensilios");
