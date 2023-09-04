@@ -12,8 +12,11 @@ document.addEventListener("DOMContentLoaded", function() {
         eighthPhase: document.querySelector(".text .mendigo"),
         ninthPhase: document.querySelector(".text .robertoRespostaMendigo"),
         tenthPhase: document.querySelector(".text .lutaBeto"),
-        eleventhPhase: document.querySelector(".text .lutaSnape"),
-        twelfthPhase: document.querySelector(".text .lutaFinal"),
+        eleventhPhase: document.querySelector(".text .betoFrase"),
+        twelfthPhase: document.querySelector(".text .robertoFraseBeto"),
+        thirteenthPhase: document.querySelector(".text .betoFrase2"),
+        fourteenthPhase: document.querySelector(".text .robertoFraseBeto2"),
+        fifteenthPhase: document.querySelector(".text .betoFrase3"),
         ganhou: document.querySelector(".text .venceu"),
         perdeu: document.querySelector(".text .perdeu"),
     };
@@ -103,12 +106,10 @@ document.addEventListener("DOMContentLoaded", function() {
     typeAndErase(selectedPhrase);
 
     let walk = true;
-    let exec = 0;
-    let activate = true ? exec == 0 : false;
-    let activateB = true ? exec == 0 : false;
+    let activate = 0;
+    let activateB = 0;
 
     function movimentos(valueA, valueB) {
-        console.log(activate)
         let roberto = document.querySelector(".robertoStatic");
         let up = document.querySelector(".subir");
         let down = document.querySelector(".descer");
@@ -133,7 +134,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
+                    if (mapa === 2) {
+                        checkPosition(activate, 809, 895, -24, -4 , 9, 14)
+                    }
                 }
+                changeMap();
             }
     
             animate();
@@ -153,7 +158,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
+                    if (mapa === 2) {
+                        checkPosition(activate, 809, 895, -24, -4 , 9, 14)
+                    }
                 }
+                changeMap();
             }
     
             animate();
@@ -173,14 +182,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
+                    if (mapa === 2) {
+                        checkPosition(activate, 809, 895, -24, -4 , 9, 14)
+                    }
                 }
+                changeMap();
             }
     
             animate();
         });
     
         right.addEventListener("click", function () {
-            console.log("A")
             let targetX = positionX + step;
     
             function animate() {
@@ -194,22 +206,32 @@ document.addEventListener("DOMContentLoaded", function() {
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
+                    if (mapa === 2) {
+                        checkPosition(activate, 809, 895, -24, -4 , 9, 14)
+                    }
                 }
+                changeMap();
             }
     
             animate();
         });
-    
         // Função para verificar a posição e executar ações conforme necessário
         let interval; // Declarando a variável de intervalo
 
-        function retornarLayoutAnterior(originalContent) {
+        function retornarLayoutAnterior(numPhraseStart, originalContent) {
             let fase = document.querySelector('.fase');
             fase.innerHTML = originalContent;
+            if (numPhraseStart === 0) {
+                activate = 1;
+                return activate;
+            }
+            activateB = 1;
+            activate = 0;
+            return activate;
         }
 
         function checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd) {
-            if (activate) {
+            if (activate === 0) {
                 if (positionX >= numX && positionX <= numY && positionY >= numXa && positionY <= numXb) {
                     walk = false;
                     if (selectedPhrase.textContent === '') {
@@ -244,19 +266,19 @@ document.addEventListener("DOMContentLoaded", function() {
                                     fase.removeChild(imgLoading);
                                 }
                                 // Restaurando o conteúdo original da 'fase'
-                                retornarLayoutAnterior(originalContent);
-
+                                retornarLayoutAnterior(numPhraseStart, originalContent);
                                 selectedPhrase = allPhrases[currentPhraseIndex];
                                 changingTextType();
                                 typeAndErase(selectedPhrase);
                                 currentPhraseIndex++;
                             } else {
                                 clearInterval(interval); 
-                                retornarLayoutAnterior(originalContent);
-                                activate = false
+                                retornarLayoutAnterior(numPhraseStart, originalContent);
                                 walk = true;
-                                exec++;
                                 movimentos(positionX, positionY);
+                                if (mapa === 2) {
+                                    battle();
+                                }
                                 return;
                             }
                         }, 3500);
@@ -425,6 +447,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
     lifesImage();
 
+    function lifeImageBeto() {
+        let lifeHeart = document.querySelector(".heartBeto")
+
+        for (let i = 0; i < 5; i++) {
+            lifeHeart.innerHTML += `<img class="coracao ${i}" src="img/Jogo/Life/Life.png">`
+        }
+    }
+
     function musicSong() {
         let audio = document.querySelector(".music");
         let playButton = document.querySelector("#playButton");
@@ -454,6 +484,57 @@ document.addEventListener("DOMContentLoaded", function() {
         movimentos(positionX, positionY)
     }
 
-    positionStart()
+    positionStart();
+
+    
+    let mapa = 1;
+
+    function changeMap() {
+        let roberto = document.querySelector(".robertoStatic");
+        let imagemFundoMissao = document.querySelector(".backgroundImage");
+    
+        // Verifique se o elemento roberto foi encontrado
+        if (roberto) {
+            let audioBattle = document.querySelector(".music")
+            let computedStyle = window.getComputedStyle(roberto);
+            let transformValue = computedStyle.getPropertyValue("transform");
+            let matrix = new DOMMatrix(transformValue);
+    
+            // Obtenha o valor de X a partir da matriz de transformação
+            let positionX = matrix.m41;
+    
+            if (activate === 1 && positionX === 931) {
+                imagemFundoMissao.src = "img/Jogo/Mapa/parteDoisMissao.jpg";
+                mapa++;
+                activate = 0;
+                activateB = 0;
+                positionStart();
+            } else if (mapa === 2 && positionX >= 426) {
+                imagemFundoMissao.src = "img/Jogo/Mapa/lutaBeto/lutaBetoJedi.png";
+                audioBattle.src = "songs/BattleSong.mp4"
+            }
+        }
+    }
+    
+    changeMap();
+
+
+    function battle() {
+        let fase = document.querySelector(".fase")
+        let menuInterativo = document.querySelector(".menuInterativo")
+        let selecionarUtensilios = document.querySelector(".selecionarUtensilios")
+
+        menuInterativo.innerHTML = '';
+        selecionarUtensilios.innerHTML = '';
+
+        fase.innerHTML = `<div class="heart"></div>
+        <div class="heartBeto"></div>
+        <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
+        <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
+        <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`
+
+        lifesImage();
+        lifeImageBeto();
+    }
 
 });
