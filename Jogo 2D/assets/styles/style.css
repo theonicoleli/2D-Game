@@ -126,6 +126,9 @@ body {
     height: 250px;
 }
 
+/* .fase.robertoBattle{
+} */
+
 .heartBeto {
     display: flex;
     align-items: flex-end;
@@ -147,6 +150,53 @@ body {
 #playButton:hover {
     transform: scale(1.05);
     transition: transform 1s;
+}
+
+.menuInterativo .batalha {
+    width: 200px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+.jogavel {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: peixeJogado 1s linear infinite;
+}
+
+.jogavel.peixe{
+    transform: translateX(-50%);
+    animation: peixeJogado 1s linear infinite;
+}
+
+.jogavel.sabre{
+    transform: translateX(-50%);
+    animation: sabreJogado 1s linear infinite;
+}
+
+@keyframes peixeJogado {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes sabreJogado {
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
 }
 
 @keyframes tamanhoInfinito {

@@ -17,8 +17,14 @@ document.addEventListener("DOMContentLoaded", function() {
         thirteenthPhase: document.querySelector(".text .betoFrase2"),
         fourteenthPhase: document.querySelector(".text .robertoFraseBeto2"),
         fifteenthPhase: document.querySelector(".text .betoFrase3"),
-        ganhou: document.querySelector(".text .venceu"),
+        sixteenthPhase: document.querySelector(".text .betoDefendeu"),
+        seventeenthPhase: document.querySelector(".text .betoTomou"),
+        eighteenthPhase: document.querySelector(".text .robertoDefendeu"),
+        nineteenthPhase: document.querySelector(".text .robertoTomou"),
+        twentiethPhase: document.querySelector(".text .quantidadeAtaque"),
+        twentiethFirstPhase: document.querySelector(".text .semAtaque"),
         perdeu: document.querySelector(".text .perdeu"),
+        ganhou: document.querySelector(".text .venceu"),
     };
     
     const allPhrases = Object.values(phases);
@@ -108,8 +114,11 @@ document.addEventListener("DOMContentLoaded", function() {
     let walk = true;
     let activate = 0;
     let activateB = 0;
+    let changeMapActivated = false;
+    let mapa = 1;
 
     function movimentos(valueA, valueB) {
+        let mapaAtual = mapa;
         let roberto = document.querySelector(".robertoStatic");
         let up = document.querySelector(".subir");
         let down = document.querySelector(".descer");
@@ -118,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         let positionX = valueA; // Posição X
         let positionY = valueB; // Posição Y
-        let step = 20; // Quantidade de espaço ao andar
+        let step = 30; // Quantidade de espaço ao andar
     
         up.addEventListener("click", function () {
             let targetY = positionY - step; // Verificação onde será o próximo passo
@@ -127,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!walk) {
                     return;
                 }
-                else if (positionY > targetY && positionY > -118) {
+                else if (positionY > targetY && positionY > -118 && mapaAtual == mapa) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
@@ -139,6 +148,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
                 changeMap();
+                if (changeMapActivated) {
+                    positionX = 119;
+                    positionY = 277;
+                    changeMapActivated = false;
+                    return;
+                }
             }
     
             animate();
@@ -151,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!walk) {
                     return;
                 }
-                else if (positionY < targetY && positionY < 411) {
+                else if (positionY < targetY && positionY < 411 && mapaAtual == mapa) {
                     positionY += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
@@ -163,6 +178,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
                 changeMap();
+                if (changeMapActivated) {
+                    positionX = 119;
+                    positionY = 277;
+                    changeMapActivated = false;
+                    return;
+                }
             }
     
             animate();
@@ -175,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!walk) {
                     return;
                 }
-                else if (positionX > targetX && positionX > -29) {
+                else if (positionX > targetX && positionX > -29 && mapaAtual == mapa) {
                     positionX -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
@@ -187,6 +208,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
                 changeMap();
+                if (changeMapActivated) {
+                    positionX = 119;
+                    positionY = 277;
+                    changeMapActivated = false;
+                    return;
+                }
             }
     
             animate();
@@ -199,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!walk) {
                     return;
                 }
-                else if (positionX < targetX && positionX < 931) {
+                else if (positionX < targetX && positionX < 931 && mapaAtual == mapa) {
                     positionX += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
                     console.log(`translate(${positionX}px, ${positionY}px)`)
@@ -208,9 +235,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
                     if (mapa === 2) {
                         checkPosition(activate, 809, 895, -24, -4 , 9, 14)
+                        // checkPosition(activateB, 809, 895, -24, -4 , 9, 14)
                     }
                 }
                 changeMap();
+                if (changeMapActivated) {
+                    positionX = 119;
+                    positionY = 277;
+                    changeMapActivated = false;
+                    return;
+                }
             }
     
             animate();
@@ -275,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 clearInterval(interval); 
                                 retornarLayoutAnterior(numPhraseStart, originalContent);
                                 walk = true;
-                                movimentos(positionX, positionY);
+                                positionStart(positionX, positionY)
                                 if (mapa === 2) {
                                     battle();
                                 }
@@ -286,9 +320,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     else {
                         if (selectedPhrase.textContent === 'Missão: Em busca de Leia!') {
                             return;
-                        } else if (selectedPhrase.textContent === "Chegue até o circulo verde!") {
-                            selectedPhrase.textContent = '';
-                            checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd);
                         } else {
                             selectedPhrase.textContent = '';
                             checkPosition(activate, numX, numY, numXa, numXb, numPhraseStart, numPhraseEnd);
@@ -447,10 +478,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     lifesImage();
 
+    let coracaoBeto = 5;
+
     function lifeImageBeto() {
         let lifeHeart = document.querySelector(".heartBeto")
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < coracaoBeto; i++) {
             lifeHeart.innerHTML += `<img class="coracao ${i}" src="img/Jogo/Life/Life.png">`
         }
     }
@@ -476,18 +509,18 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("playButton").addEventListener("click", musicSong);
 
 
-    function positionStart() {
+    function positionStart(numX, numY) {
         let roberto = document.querySelector(".robertoStatic");
-        positionX = 119;
-        positionY = 277;
+        positionX = numX;
+        positionY = numY;
         roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
         movimentos(positionX, positionY)
     }
 
-    positionStart();
+    positionStart(119, 277);
 
-    
-    let mapa = 1;
+
+    let ativacaoVez = 0;
 
     function changeMap() {
         let roberto = document.querySelector(".robertoStatic");
@@ -508,33 +541,192 @@ document.addEventListener("DOMContentLoaded", function() {
                 mapa++;
                 activate = 0;
                 activateB = 0;
-                positionStart();
-            } else if (mapa === 2 && positionX >= 426) {
+                positionStart(119,277);
+                return changeMapActivated = true;
+            } else if (mapa === 2 && positionX >= 426 && ativacaoVez === 0) {
                 imagemFundoMissao.src = "img/Jogo/Mapa/lutaBeto/lutaBetoJedi.png";
-                audioBattle.src = "songs/BattleSong.mp4"
+                audioBattle.src = "songs/BattleSong.mp4";
+                ativacaoVez++;
+            } else if (mapa === 2 && positionX === -29) {
+                imagemFundoMissao.src = "img/Jogo/Mapa/parkImage.png";
+                audioBattle.src = "songs/OfficialMusic.mp4"
             }
         }
     }
-    
-    changeMap();
 
 
     function battle() {
-        let fase = document.querySelector(".fase")
-        let menuInterativo = document.querySelector(".menuInterativo")
-        let selecionarUtensilios = document.querySelector(".selecionarUtensilios")
+        let fase = document.querySelector(".fase");
+        let menuInterativo = document.querySelector(".menuInterativo");
+        let selecionarUtensilios = document.querySelector(".selecionarUtensilios");
 
         menuInterativo.innerHTML = '';
         selecionarUtensilios.innerHTML = '';
 
-        fase.innerHTML = `<div class="heart"></div>
+        fase.innerHTML = `
+        <div class="heart"></div>
         <div class="heartBeto"></div>
         <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
         <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
-        <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`
+        <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`;
+
+        menuInterativo.innerHTML = '<button class="batalha atacar">Atacar</button> <button class="batalha defender">Defender</button>';
 
         lifesImage();
         lifeImageBeto();
+
+        atacar();
+
+        console.log(coracaoBeto, startLife)
+        if (coracaoBeto > 0 && startLife > 0)
+            ataqueBeto();
     }
+
+
+    function betoTomarDano() {
+        // Gera um número aleatório entre 0 (inclusive) e 1 (exclusivo)
+        var randomNumber = Math.random();
+    
+        // Se o número gerado for menor que 0.5, retorne true; caso contrário, retorne false
+        return randomNumber < 0.5;
+    }
+
+
+    function mensagemBatalha(currentPhraseIndex) {
+        selectedPhrase = allPhrases[currentPhraseIndex];
+        changingTextType();
+        typeAndErase(selectedPhrase);
+    }
+
+
+    let quantidadeAtaque = 15;
+    let valorAtaque = document.getElementById('valorAtaque');
+    
+    function atacar() {
+        let atacarButton = document.querySelector(".batalha.atacar");
+        let fase = document.querySelector(".fase");
+    
+        atacarButton.addEventListener("click", () => {
+            if (quantidadeAtaque > 0 && pegarImagemCachorro() != null) {
+                quantidadeAtaque--;
+                valorAtaque.textContent = quantidadeAtaque;
+                mensagemBatalha(19);
+                if (coracaoBeto >= 0) {
+                    fase.innerHTML += `<img class="jogavel peixe" src="img/Jogo/Batalha Final/peixeJogavel.gif" alt="peixeBatalha">`;
+                    setTimeout(() => {
+                        fase.innerHTML = `<div class="heart"></div>
+                        <div class="heartBeto"></div>
+                        <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
+                        <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
+                        <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`;
+    
+                        let betoBattle = document.querySelector(".betoBattle");
+    
+                        if (betoTomarDano()) {
+                            mensagemBatalha(16);
+                            coracaoBeto--;
+                        } else {
+                            mensagemBatalha(15);
+                        }
+    
+                        lifesImage();
+                        lifeImageBeto();
+    
+                        if (coracaoBeto <= 2 && coracaoBeto != 0) {
+                            betoBattle.src = "img/Viloes/Beto/betoSith.png";
+                        } else if (coracaoBeto === 0) {
+                            console.log("aqui!")
+                            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
+                            mensagemBatalha(22);
+                            return;
+                        } else if (startLife === 0) {
+                            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                            mensagemBatalha(21);
+                            return;
+                        }
+                    }, 1000);
+                } else {
+                    mensagemBatalha(20);
+                }
+            } else if (coracaoBeto === 0) {
+                return;
+            }
+            else{
+                fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                mensagemBatalha(21);
+                return;
+            }
+        });
+    }
+
+
+    function pegarImagemCachorro() {
+        let betoBattle = document.querySelector(".betoBattle");
+        return betoBattle.src
+    }
+
+
+
+    function ataqueBeto() {
+        let fase = document.querySelector(".fase");
+        let intervalJedi;
+
+        if (coracaoBeto > 0 && startLife > 0) {
+            console.log(coracaoBeto)
+            intervalJedi = setInterval(() => {
+                if (pegarImagemCachorro() != null) {
+                    fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="peixeBatalha">`;
+                    setTimeout(() => {
+                        fase.innerHTML = `<div class="heart"></div>
+                        <div class="heartBeto"></div>
+                        <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
+                        <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
+                        <img class="betoBattle" src="${pegarImagemCachorro()}" alt="beto">`;
+                        
+                        lifesImage();
+                        lifeImageBeto();
+                        mensagemBatalha(17);
+            
+                        let defesaButton = document.querySelector(".batalha.defesa");
+                        let defesa;
+                        
+                        defesaButton.addEventListener("click", () => {
+                            defesa = defendendo();
+                            
+                            if (defesa) {
+                                mensagemBatalha(17);
+                            } else {
+                                mensagemBatalha(18);
+                                startLife--;
+                            }
+            
+                            lifesImage();
+                            lifeImageBeto();
+                        });
+                    }, 1000);
+                } else {
+                    if (coracaoBeto === 0) {
+                        fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
+                        mensagemBatalha(22);
+                        intervalJedi = null;
+                        return;
+                    } else if (startLife === 0) {
+                        fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                        mensagemBatalha(21);
+                        intervalJedi = null;
+                        return;
+                    }
+                }
+            }, 5000);
+        }
+    }
+    
+    function defendendo() {
+        var randomNumber = Math.random();
+        console.log(randomNumber);
+    
+        return randomNumber < 0.5;
+    }
+    
 
 });
