@@ -609,7 +609,12 @@ document.addEventListener("DOMContentLoaded", function() {
         atacarButton.addEventListener("click", () => {
             if (quantidadeAtaque > 0 && pegarImagemCachorro() != null) {
                 quantidadeAtaque--;
+                selectedPhrase = allPhrases[19];
+                selectedPhrase.textContent = `${quantidadeAtaque} Ataques`;
                 valorAtaque.textContent = quantidadeAtaque;
+                console.log(quantidadeAtaque);
+                console.log(valorAtaque.textContent);
+                console.log(selectedPhrase)
                 mensagemBatalha(19);
                 if (coracaoBeto >= 0) {
                     fase.innerHTML += `<img class="jogavel peixe" src="img/Jogo/Batalha Final/peixeJogavel.gif" alt="peixeBatalha">`;
@@ -662,70 +667,69 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function pegarImagemCachorro() {
         let betoBattle = document.querySelector(".betoBattle");
-        return betoBattle.src
+        return betoBattle != null ? betoBattle.src : null;
     }
-
 
 
     function ataqueBeto() {
         let fase = document.querySelector(".fase");
-        let intervalJedi;
-
+        let defesaButton = document.querySelector(".batalha.defender");
+    
         if (coracaoBeto > 0 && startLife > 0) {
-            console.log(coracaoBeto)
-            intervalJedi = setInterval(() => {
+            console.log(coracaoBeto);
+            setInterval(() => {
                 if (pegarImagemCachorro() != null) {
-                    fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="peixeBatalha">`;
+                    fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="sabreBatalha">`;
+    
+                    let jogavelSabre = document.querySelector(".jogavel.sabre");
+                    let animationInProgress = false;
+    
+                    jogavelSabre.addEventListener("animationiteration", () => {
+                        console.log("A animação está em andamento");
+                        animationInProgress = true;
+                    });
+    
+                    let checkAnimation = () => {
+                        console.log("Verificando animação...");
+                        if (animationInProgress) {
+                            console.log("A animação está em andamento");
+                            mensagemBatalha(17);
+                        } else {
+                            console.log("A animação não está em andamento");
+                            mensagemBatalha(18);
+                            startLife--;
+                        }
+                        animationInProgress = false; // Redefina o estado da animação
+                    };
+    
+                    defesaButton.addEventListener("click", () => {
+                        console.log("Você apertou o botão de defesa");
+                        checkAnimation(); // Verifique a animação quando o botão de defesa for clicado
+                    });
+    
                     setTimeout(() => {
                         fase.innerHTML = `<div class="heart"></div>
-                        <div class="heartBeto"></div>
-                        <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
-                        <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
-                        <img class="betoBattle" src="${pegarImagemCachorro()}" alt="beto">`;
-                        
+                            <div class="heartBeto"></div>
+                            <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
+                            <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
+                            <img class="betoBattle" src="${pegarImagemCachorro()}" alt="beto">`;
+    
                         lifesImage();
-                        lifeImageBeto();
-                        mensagemBatalha(17);
-            
-                        let defesaButton = document.querySelector(".batalha.defesa");
-                        let defesa;
-                        
-                        defesaButton.addEventListener("click", () => {
-                            defesa = defendendo();
-                            
-                            if (defesa) {
-                                mensagemBatalha(17);
-                            } else {
-                                mensagemBatalha(18);
-                                startLife--;
-                            }
-            
-                            lifesImage();
-                            lifeImageBeto();
-                        });
+                        checkAnimation(); // Verifique a animação após 1 segundo
                     }, 1000);
                 } else {
                     if (coracaoBeto === 0) {
                         fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
                         mensagemBatalha(22);
-                        intervalJedi = null;
                         return;
                     } else if (startLife === 0) {
                         fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
                         mensagemBatalha(21);
-                        intervalJedi = null;
                         return;
                     }
                 }
             }, 5000);
         }
-    }
-    
-    function defendendo() {
-        var randomNumber = Math.random();
-        console.log(randomNumber);
-    
-        return randomNumber < 0.5;
     }
     
 

@@ -121,13 +121,29 @@ body {
     box-shadow: 0px 0px 5px 5px white;
 }
 
-.fase .betoBattle {
-    width: 250px;
-    height: 250px;
+.fase {
+    position: relative; /* Certifique-se de que o elemento pai tenha posição relativa */
+    /* Outras regras de estilo para .fase */
 }
 
-/* .fase.robertoBattle{
-} */
+.betoBattle {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    position: absolute; /* Use position: absolute para fixar a posição */
+    left: 600px; /* Distância horizontal em relação ao elemento pai */
+    top: 45%; /* Distância vertical em relação ao elemento pai (centro vertical) */
+    /* Outras regras de estilo para .betoBattle */
+}
+
+.robertoBattle {
+    display: flex;
+    position: absolute; /* Use position: absolute para fixar a posição */
+    left: 0px; /* Distância horizontal em relação ao elemento pai (ajuste conforme necessário) */
+    top: 180px; /* Distância vertical em relação ao elemento pai (ajuste conforme necessário) */
+    /* Outras regras de estilo para .robertoBattle */
+}
+
 
 .heartBeto {
     display: flex;
@@ -173,11 +189,13 @@ body {
 
 .jogavel.peixe{
     transform: translateX(-50%);
+    top: 55%;
     animation: peixeJogado 1s linear infinite;
 }
 
 .jogavel.sabre{
     transform: translateX(-50%);
+    top: 55%;
     animation: sabreJogado 1s linear infinite;
 }
 
