@@ -599,6 +599,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
+    let attack = true;
+
+    //Função para que o ataque só seja válido após 10 segundos
+    function secondsStart() {
+      // Defina attack como false
+        attack = false;
+    
+      // Conta até 10 segundos (10000 milissegundos)
+        setTimeout(function() {
+            // Após 10 segundos, defina attack como true novamente
+            attack = true;
+        }, 3000);
+    }
+
+
     let quantidadeAtaque = 15;
     let valorAtaque = document.getElementById('valorAtaque');
     
@@ -607,58 +622,63 @@ document.addEventListener("DOMContentLoaded", function() {
         let fase = document.querySelector(".fase");
     
         atacarButton.addEventListener("click", () => {
-            if (quantidadeAtaque > 0 && pegarImagemCachorro() != null) {
-                quantidadeAtaque--;
-                selectedPhrase = allPhrases[19];
-                selectedPhrase.textContent = `${quantidadeAtaque} Ataques`;
-                valorAtaque.textContent = quantidadeAtaque;
-                console.log(quantidadeAtaque);
-                console.log(valorAtaque.textContent);
-                console.log(selectedPhrase)
-                mensagemBatalha(19);
-                if (coracaoBeto >= 0) {
-                    fase.innerHTML += `<img class="jogavel peixe" src="img/Jogo/Batalha Final/peixeJogavel.gif" alt="peixeBatalha">`;
-                    setTimeout(() => {
-                        fase.innerHTML = `<div class="heart"></div>
-                        <div class="heartBeto"></div>
-                        <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
-                        <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
-                        <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`;
-    
-                        let betoBattle = document.querySelector(".betoBattle");
-    
-                        if (betoTomarDano()) {
-                            mensagemBatalha(16);
-                            coracaoBeto--;
-                        } else {
-                            mensagemBatalha(15);
-                        }
-    
-                        lifesImage();
-                        lifeImageBeto();
-    
-                        if (coracaoBeto <= 2 && coracaoBeto != 0) {
-                            betoBattle.src = "img/Viloes/Beto/betoSith.png";
-                        } else if (coracaoBeto === 0) {
-                            console.log("aqui!")
-                            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
-                            mensagemBatalha(22);
-                            return;
-                        } else if (startLife === 0) {
-                            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-                            mensagemBatalha(21);
-                            return;
-                        }
-                    }, 1000);
-                } else {
-                    mensagemBatalha(20);
+            if (attack) {
+                if (quantidadeAtaque > 0 && pegarImagemCachorro() != null) {
+                    secondsStart();
+                    quantidadeAtaque--;
+                    selectedPhrase = allPhrases[19];
+                    selectedPhrase.textContent = `${quantidadeAtaque} Ataques`;
+                    valorAtaque.textContent = quantidadeAtaque;
+                    console.log(quantidadeAtaque);
+                    console.log(valorAtaque.textContent);
+                    console.log(selectedPhrase)
+                    mensagemBatalha(19);
+                    if (coracaoBeto >= 0) {
+                        fase.innerHTML += `<img class="jogavel peixe" src="img/Jogo/Batalha Final/peixeJogavel.gif" alt="peixeBatalha">`;
+                        setTimeout(() => {
+                            fase.innerHTML = `<div class="heart"></div>
+                            <div class="heartBeto"></div>
+                            <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
+                            <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
+                            <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`;
+        
+                            let betoBattle = document.querySelector(".betoBattle");
+        
+                            if (betoTomarDano()) {
+                                mensagemBatalha(16);
+                                coracaoBeto--;
+                            } else {
+                                mensagemBatalha(15);
+                            }
+        
+                            lifesImage();
+                            lifeImageBeto();
+        
+                            if (coracaoBeto <= 2 && coracaoBeto != 0) {
+                                betoBattle.src = "img/Viloes/Beto/betoSith.png";
+                            } else if (coracaoBeto === 0) {
+                                console.log("aqui!")
+                                fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
+                                mensagemBatalha(22);
+                                return;
+                            } else if (startLife === 0) {
+                                fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                                mensagemBatalha(21);
+                                return;
+                            }
+                        }, 1000);
+                    } else {
+                        mensagemBatalha(20);
+                    }
+                } else if (coracaoBeto === 0) {
+                    return;
                 }
-            } else if (coracaoBeto === 0) {
-                return;
-            }
-            else{
-                fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-                mensagemBatalha(21);
+                else{
+                    fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                    mensagemBatalha(21);
+                    return;
+                }
+            } else {
                 return;
             }
         });
@@ -669,43 +689,59 @@ document.addEventListener("DOMContentLoaded", function() {
         let betoBattle = document.querySelector(".betoBattle");
         return betoBattle != null ? betoBattle.src : null;
     }
-
-
+    
+    let animationInProgress = false;
+    let animationTimeout;
+    let defesaButton;
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        defesaButton = document.querySelector(".batalha.defender");
+    
+        defesaButton.addEventListener("click", () => {
+            console.log("Você apertou o botão de defesa");
+            if (!animationInProgress && !defesaButtonClicked) {
+                executeDefesa();
+            } else {
+                console.log("A animação está em andamento ou o botão de defesa já foi clicado.");
+            }
+        });
+    
+        ataqueBeto();
+    });
+    
     function ataqueBeto() {
         let fase = document.querySelector(".fase");
-        let defesaButton = document.querySelector(".batalha.defender");
     
         if (coracaoBeto > 0 && startLife > 0) {
-            console.log(coracaoBeto);
             setInterval(() => {
                 if (pegarImagemCachorro() != null) {
-                    fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="sabreBatalha">`;
+                    if (coracaoBeto > 2) {
+                        fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="sabreBatalha">`;
+                    } else {
+                        fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaberRed.gif" alt="sabreBatalha">`;
+                    }
     
                     let jogavelSabre = document.querySelector(".jogavel.sabre");
-                    let animationInProgress = false;
     
-                    jogavelSabre.addEventListener("animationiteration", () => {
-                        console.log("A animação está em andamento");
+                    jogavelSabre.addEventListener("animationstart", () => {
+                        console.log("A animação começou");
                         animationInProgress = true;
                     });
     
-                    let checkAnimation = () => {
-                        console.log("Verificando animação...");
-                        if (animationInProgress) {
-                            console.log("A animação está em andamento");
-                            mensagemBatalha(17);
-                        } else {
-                            console.log("A animação não está em andamento");
+                    jogavelSabre.addEventListener("animationend", () => {
+                        console.log("A animação terminou");
+                        animationInProgress = false;
+                        clearTimeout(animationTimeout);
+                        defesaButtonClicked = false; // Resetar a variável quando a animação terminar
+                    });
+    
+                    animationTimeout = setTimeout(() => {
+                        if (!animationInProgress && !defesaButtonClicked) {
+                            console.log("A animação terminou e o botão de defesa não foi clicado. Aplicando dano.");
                             mensagemBatalha(18);
                             startLife--;
                         }
-                        animationInProgress = false; // Redefina o estado da animação
-                    };
-    
-                    defesaButton.addEventListener("click", () => {
-                        console.log("Você apertou o botão de defesa");
-                        checkAnimation(); // Verifique a animação quando o botão de defesa for clicado
-                    });
+                    }, 1000);
     
                     setTimeout(() => {
                         fase.innerHTML = `<div class="heart"></div>
@@ -715,7 +751,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <img class="betoBattle" src="${pegarImagemCachorro()}" alt="beto">`;
     
                         lifesImage();
-                        checkAnimation(); // Verifique a animação após 1 segundo
+                        lifeImageBeto();
                     }, 1000);
                 } else {
                     if (coracaoBeto === 0) {
@@ -731,6 +767,19 @@ document.addEventListener("DOMContentLoaded", function() {
             }, 5000);
         }
     }
+    
+    function executeDefesa() {
+        if (animationInProgress) {
+            console.log("A animação está em andamento");
+            mensagemBatalha(17);
+        } else {
+            console.log("A animação não está em andamento");
+            startLife--;
+            defesaButtonClicked = true; // Atualizar a variável para evitar múltiplos cliques
+        }
+    }
+    
+    let defesaButtonClicked = false;
     
 
 });
