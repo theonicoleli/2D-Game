@@ -699,6 +699,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function ataqueBeto() {
         let fase = document.querySelector(".fase");
+        let menuInterativo = document.querySelector(".menuInterativo");
     
         if (coracaoBeto > 0 && startLife > 0) {
             setInterval(() => {
