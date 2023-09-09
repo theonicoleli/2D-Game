@@ -1,0 +1,69 @@
+<!-- TRABALHO REALIZADO EM DUPLA:
+THÉO NICOLELI E PEDRO DALLANORA -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <link rel="shortcut icon" href="img/Jogo/Imagem Jogo/Game.png" type="image/x-icon">
+    <script src="assets/scripts/script.js"></script>
+    <title>A Jornada de Gato Roberto</title>
+</head>
+<body>
+    <button id="playButton" onchange="musicSong();">Game Music</button>
+    <audio class="music" src="songs/OfficialMusic.mp4" autoplay></audio>
+    <div class="text">
+        <p class="fraseInicial">Chegue até o circulo verde!</p>
+        <p class="buscandoLeia">Patrick: Você deve ir em busca de Leia</p>
+        <p class="robertoResposta1">Roberto: O que aconteceu com ela?</p>
+        <p class="patrickResposta">Patrick: Ela foi capturada por Beto</p>
+        <p class="robertoResposta2">Roberto: E para qual lado eles a levaram?</p>
+        <p class="patrickResposta2">Patrick: Para a direita!!</p>
+        <p class="missionBuscandoLeia">Missão: Em busca de Leia</p>
+        <p class="mendigo">Zé Felipe: Fale com Patrick, no circulo...</p>
+        <p class="robertoRespostaMendigo">Roberto: Ok... muito obrigado!</p>
+        <p class="lutaBeto">Oh não... você lutará contra Beto</p>
+        <p class="betoFrase">Beto: Olá... estava a seu aguardo!!</p>
+        <p class="robertoFraseBeto">Roberto: O que você fez com Leia??</p>
+        <p class="betoFrase2">Beto: Estou ensinando o verdadeiro amor!</p>
+        <p class="robertoFraseBeto2">Roberto: Você sofrerá por isto.</p>
+        <p class="betoFrase3">Beto: Você vai tentar???</p>
+        <p class="betoDefendeu">Beto Defendeu-se</p>
+        <p class="betoTomou">Beto se feriu!!</p>
+        <p class="robertoDefendeu">Você defendeu!!</p>
+        <p class="robertoTomou">Você se feriu</p>
+        <p class="quantidadeAtaque"><span id="valorAtaque"></span> Ataques</p>
+        <p class="semAtaque">Agora você não possui ataque</p>
+        <p class="perdeu">Puts, que pena que você perdeu...</p>
+        <p class="venceu">Parabénss!! Você venceu</p>
+    </div>
+    <div class="fase">
+        <img class="backgroundImage" src="img/Jogo/Mapa/parkImage.png" alt="park">
+        <div class="timelapse"></div>
+        <div class="heart"></div>
+        <div class="heartBeto"></div>
+        <img class="robertoStatic" src="img/Roberto/RobertoDePe.png" alt="roberto">
+    </div>
+    <div class="menuInterativo">
+        <button class="subir">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <button class="descer">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
+        <button class="esquerda">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button class="direita">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+    <div class="selecionarUtensilios">
+        <img class="item bolsa" src="img/Items/bolsa.png" alt="bolsa">
+    </div>
+</body>
+</html>
