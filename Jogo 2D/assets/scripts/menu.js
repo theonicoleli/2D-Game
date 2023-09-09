@@ -1,5 +1,5 @@
 document.addEventListener("scroll", () => {
-    const ids = ["theo"]
+    const ids = ["textoCriadores","theo", "pedro"]
     let elements = new Array();
 
     for (const id of ids) {
@@ -13,7 +13,7 @@ document.addEventListener("scroll", () => {
 
         const windowCenter = windowHeight / 2;
         
-        if (rect.top <= windowCenter && rect.bottom >= windowCenter) {
+        if (rect.top*2 <= windowCenter && rect.bottom*2 >= windowCenter) {
             element.classList.add("visible");
         } else {
             element.classList.remove("visible");

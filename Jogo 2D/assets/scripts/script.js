@@ -554,32 +554,36 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    let buttonDefesaActivate = false;
 
     function battle() {
         let fase = document.querySelector(".fase");
         let menuInterativo = document.querySelector(".menuInterativo");
         let selecionarUtensilios = document.querySelector(".selecionarUtensilios");
-
+    
         menuInterativo.innerHTML = '';
         selecionarUtensilios.innerHTML = '';
-
+    
         fase.innerHTML = `
         <div class="heart"></div>
         <div class="heartBeto"></div>
         <img class="backgroundImage" src="img/Jogo/Mapa/batalhaFinal.png" alt="park">
         <img class="robertoBattle" src="img/Roberto/RobertoNoiteBatalha.png" alt="roberto">
         <img class="betoBattle" src="img/Viloes/Beto/betoJedi.png" alt="beto">`;
-
+    
         menuInterativo.innerHTML = '<button class="batalha atacar">Atacar</button> <button class="batalha defender">Defender</button>';
-
+    
         lifesImage();
         lifeImageBeto();
-
+    
         atacar();
-
-        console.log(coracaoBeto, startLife)
-        if (coracaoBeto > 0 && startLife > 0)
-            ataqueBeto();
+    
+        let defesaButton = document.querySelector(".batalha.defender");
+        defesaButton.addEventListener("click", () => {
+            buttonDefesaActivate = true;
+        });
+    
+        ataqueBeto();
     }
 
 
@@ -691,23 +695,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     let animationInProgress = false;
-    let animationTimeout;
-    let defesaButton;
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        defesaButton = document.querySelector(".batalha.defender");
-    
-        defesaButton.addEventListener("click", () => {
-            console.log("Você apertou o botão de defesa");
-            if (!animationInProgress && !defesaButtonClicked) {
-                executeDefesa();
-            } else {
-                console.log("A animação está em andamento ou o botão de defesa já foi clicado.");
-            }
-        });
-    
-        ataqueBeto();
-    });
+    let defesaButtonClicked = false;
     
     function ataqueBeto() {
         let fase = document.querySelector(".fase");
@@ -728,19 +716,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         animationInProgress = true;
                     });
     
-                    jogavelSabre.addEventListener("animationend", () => {
-                        console.log("A animação terminou");
-                        animationInProgress = false;
-                        clearTimeout(animationTimeout);
-                        defesaButtonClicked = false; // Resetar a variável quando a animação terminar
-                    });
-    
                     animationTimeout = setTimeout(() => {
-                        if (!animationInProgress && !defesaButtonClicked) {
+                        if (animationInProgress && defesaButtonClicked === false && buttonDefesaActivate === false) {
                             console.log("A animação terminou e o botão de defesa não foi clicado. Aplicando dano.");
-                            mensagemBatalha(18);
                             startLife--;
+                            mensagemBatalha(18);
+                            return;
                         }
+                        buttonDefesaActivate = false;
+                        mensagemBatalha(17);
+                        return;
                     }, 1000);
     
                     setTimeout(() => {
@@ -767,19 +752,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }, 5000);
         }
     }
-    
-    function executeDefesa() {
-        if (animationInProgress) {
-            console.log("A animação está em andamento");
-            mensagemBatalha(17);
-        } else {
-            console.log("A animação não está em andamento");
-            startLife--;
-            defesaButtonClicked = true; // Atualizar a variável para evitar múltiplos cliques
-        }
-    }
-    
-    let defesaButtonClicked = false;
     
 
 });
