@@ -618,6 +618,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function atacar() {
         let atacarButton = document.querySelector(".batalha.atacar");
+        let menuInterativo = document.querySelector(".menuInterativo");
         let fase = document.querySelector(".fase");
     
         atacarButton.addEventListener("click", () => {
@@ -654,8 +655,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 betoBattle.src = "img/Viloes/Beto/betoSith.png";
                             } else if (coracaoBeto === 0 && fase.innerHTML !== '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">') {
                                 fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
-                                menuInterativo.innerHTML = '';
                                 mensagemBatalha(22);
+                                menuInterativo.innerHTML = '';
                                 return;
                             }                            
                         }, 1000);
