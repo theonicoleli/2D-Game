@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const allPhrases = Object.values(phases);
     let currentPhraseIndex = 0;
     let selectedPhrase = allPhrases[currentPhraseIndex];
-    console.log(selectedPhrase)
 
     function changingTextType() {
         allPhrases.forEach(phrase => {
@@ -139,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 else if (positionY > targetY && positionY > -118 && mapaAtual == mapa) {
                     positionY -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
-                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
@@ -169,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 else if (positionY < targetY && positionY < 411 && mapaAtual == mapa) {
                     positionY += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
-                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
@@ -199,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 else if (positionX > targetX && positionX > -29 && mapaAtual == mapa) {
                     positionX -= 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
-                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
@@ -229,7 +225,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 else if (positionX < targetX && positionX < 931 && mapaAtual == mapa) {
                     positionX += 1;
                     roberto.style.transform = `translate(${positionX}px, ${positionY}px)`;
-                    console.log(`translate(${positionX}px, ${positionY}px)`)
                     requestAnimationFrame(animate);
                     checkPosition(activate, 280, 319, 317, 357, 0, 6); // Verificando a posição após cada etapa da animação
                     checkPosition(activateB, -6, 44, 101, 127, 7, 8);
@@ -633,9 +628,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     selectedPhrase = allPhrases[19];
                     selectedPhrase.textContent = `${quantidadeAtaque} Ataques`;
                     valorAtaque.textContent = quantidadeAtaque;
-                    console.log(quantidadeAtaque);
-                    console.log(valorAtaque.textContent);
-                    console.log(selectedPhrase)
                     mensagemBatalha(19);
                     if (coracaoBeto >= 0) {
                         fase.innerHTML += `<img class="jogavel peixe" src="img/Jogo/Batalha Final/peixeJogavel.gif" alt="peixeBatalha">`;
@@ -660,26 +652,19 @@ document.addEventListener("DOMContentLoaded", function() {
         
                             if (coracaoBeto <= 2 && coracaoBeto != 0) {
                                 betoBattle.src = "img/Viloes/Beto/betoSith.png";
-                            } else if (coracaoBeto === 0) {
-                                console.log("aqui!")
+                            } else if (coracaoBeto === 0 && fase.innerHTML !== '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">') {
                                 fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
+                                menuInterativo.innerHTML = '';
                                 mensagemBatalha(22);
                                 return;
-                            } else if (startLife === 0) {
-                                fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-                                mensagemBatalha(21);
-                                return;
-                            }
+                            }                            
                         }, 1000);
                     } else {
                         mensagemBatalha(20);
                     }
                 } else if (coracaoBeto === 0) {
                     return;
-                }
-                else{
-                    fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-                    mensagemBatalha(21);
+                } else {
                     return;
                 }
             } else {
@@ -703,7 +688,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         if (coracaoBeto > 0 && startLife > 0) {
             setInterval(() => {
-                if (pegarImagemCachorro() != null) {
+                if (pegarImagemCachorro() != null && startLife > 0) {
                     if (coracaoBeto > 2) {
                         fase.innerHTML += `<img class="jogavel sabre" src="img/Jogo/Batalha Final/lightSaber.gif" alt="sabreBatalha">`;
                     } else {
@@ -713,13 +698,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     let jogavelSabre = document.querySelector(".jogavel.sabre");
     
                     jogavelSabre.addEventListener("animationstart", () => {
-                        console.log("A animação começou");
                         animationInProgress = true;
                     });
     
                     animationTimeout = setTimeout(() => {
                         if (animationInProgress && defesaButtonClicked === false && buttonDefesaActivate === false) {
-                            console.log("A animação terminou e o botão de defesa não foi clicado. Aplicando dano.");
                             startLife--;
                             mensagemBatalha(18);
                             return;
@@ -738,20 +721,16 @@ document.addEventListener("DOMContentLoaded", function() {
     
                         lifesImage();
                         lifeImageBeto();
+                        if (startLife === 0) {
+                            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+                            menuInterativo.innerHTML = '';
+                            mensagemBatalha(21);
+                            return;
+                        }
                     }, 1000);
-                } else {
-                    if (coracaoBeto === 0) {
-                        fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim.png" alt="fim">';
-                        menuInterativo.innerHTML = '';
-                        mensagemBatalha(22);
-                        return;
-                    }
                 }
             }, 5000);
-        } else if (startLife === 0) {
-            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-            menuInterativo.innerHTML = '';
-            mensagemBatalha(21);
+        } else {
             return;
         }
     }
