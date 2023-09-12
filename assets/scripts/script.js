@@ -745,14 +745,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         menuInterativo.innerHTML = '';
                         mensagemBatalha(22);
                         return;
-                    } else if (startLife === 0) {
-                        fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
-                        menuInterativo.innerHTML = '';
-                        mensagemBatalha(21);
-                        return;
                     }
                 }
             }, 5000);
+        } else if (startLife === 0) {
+            fase.innerHTML = '<img class="backgroundImage" src="img/Jogo/Mapa/fim-2.png" alt="fim">';
+            menuInterativo.innerHTML = '';
+            mensagemBatalha(21);
+            return;
         }
     }
     
